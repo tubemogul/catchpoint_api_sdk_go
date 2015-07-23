@@ -1,4 +1,4 @@
-package catchpoint
+package alertsAPI
 
 // Author: Joseph Herlant
 //

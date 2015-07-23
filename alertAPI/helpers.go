@@ -1,4 +1,4 @@
-package catchpoint
+package alertsAPI
 
 // This File contains all the helpers definitions by the different parsers
 // that can decode the messages received from the Catchpoint Push API.
