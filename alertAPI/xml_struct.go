@@ -1,7 +1,5 @@
 package alertsAPI
 
-// Author: Joseph Herlant
-//
 // This File contains all the struct definitions needed for the xml parser for
 // catchpoint Alert Push API according to the xsd they provide as of 2015-07-06
 
