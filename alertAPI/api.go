@@ -2,14 +2,13 @@ package alertsAPI
 
 import (
 	"bytes"
+	"encoding/xml"
 	"fmt"
-	"io"
-	//	"io/ioutil"
-	// "log"
-	//	"net/http"
+	"net/http"
+	"strings"
 )
 
-// Those correspond to the return code of the nagions NSCA
+// This emum correspond to the return code of the nagios NSCA
 const (
 	OK = iota
 	WARNING
@@ -17,26 +16,29 @@ const (
 	UNKNOWN
 )
 
-// RequestHandler is the entry point for parsing the incoming http requests no
-// matter what their format is (provided it's XML, orj Json in a future release)
+// RequestHandler is the entry point for parsing the incoming alerts sent by
+// Catchpoint.
+//
+// Parameters:
+// - content (*[]byte): the content of the XML or JSON sent by Catchpoint
+//
 // Returns:
 // - uint8: the criticity level of the alert (translated NSCA standards)
 // - *string: the name of the alert
 // - *[]string: the list of the failures
 // - error: any potential error encountered during the processing of the request
-func (a *Alert) RequestHandler(r *io.ReadCloser) (uint8, *string, *[]string, error) {
+func (a *Alert) RequestHandler(content *[]byte) (uint8, *string, *[]string, error) {
 
-	//  ctype, _ := http.DetectContentType(ioutil.ReadAll(r))
-	//  if *verbose {
-	//  	log.Printf("Processing content type: %s", ctype)
-	//  }
+	ctype := http.DetectContentType(*content)
 
-	// val, _ := ioutil.ReadAll(*r)
-	// ctype := http.DetectContentType(val)
-	// log.Printf("DEBUG: Request body = %v ", string(val[:]))
-	// log.Printf("DEBUG: Content type = %v ", ctype)
-
-	err := a.ParseXMLRequest(r)
+	var err error
+	// TODO: Add Json support
+	switch {
+	case strings.Contains(ctype, "text/xml") || strings.Contains(ctype, "application/xml"):
+		err = xml.Unmarshal(*content, &a)
+	default:
+		err = fmt.Errorf("Content type %s not supported by the parser", ctype)
+	}
 	if err != nil {
 		return uint8(CRITICAL), nil, nil, err
 	} else {
@@ -75,6 +77,7 @@ func (a *Alert) PrettyPrintMessage() (uint8, *string, *[]string, error) {
 
 	returnCode = a.getAlertReturnCode(a.NotificationLevelId)
 
+	// This part creates the list of failures detected
 	for _, v := range a.Condition.Nodes {
 		var buffer bytes.Buffer
 
