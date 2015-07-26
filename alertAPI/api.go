@@ -113,5 +113,20 @@ func (a *Alert) PrettyPrintMessage() (uint8, *string, *[]string, error) {
 		alerts = append(alerts, buffer.String())
 	}
 
+	// If no alert data has been found (it is the case for OK for example), set
+	// a default message.
+	if len(alerts) == 0 {
+		switch returnCode {
+		case OK:
+			alerts = append(alerts, "OK")
+		case WARNING:
+			alerts = append(alerts, "WARNING")
+		case CRITICAL:
+			alerts = append(alerts, "CRITICAL")
+		case UNKNOWN:
+			alerts = append(alerts, "UNKNOWN")
+		}
+	}
+
 	return returnCode, &fullName, &alerts, nil
 }
