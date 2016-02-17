@@ -1,3 +1,5 @@
+[![TravisBuild](https://travis-ci.org/tubemogul/catchpoint_api_sdk_go.svg?branch=master)](https://travis-ci.org/tubemogul/catchpoint_api_sdk_go)
+
 # A SDK for the catchpoint push API called "Alerts API"
 
 ## Installing
