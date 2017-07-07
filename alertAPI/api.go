@@ -101,11 +101,11 @@ func (a *Alert) PrettyPrintMessage() (uint8, *string, *[]string, error) {
 			buffer.WriteString(fmt.Sprint(v.PageFailure.HttpStatusCode))
 		}
 
-		buffer.WriteString(" failed from \"")
+		buffer.WriteString(" failed from ")
 		buffer.WriteString(v.Name)
-		buffer.WriteString("\" (")
+		buffer.WriteString(" - ")
 		buffer.WriteString(v.IpAddress)
-		buffer.WriteString(") to ")
+		buffer.WriteString(" to ")
 		buffer.WriteString(v.RemoteIpAddress)
 		buffer.WriteString(" at ")
 		buffer.WriteString(a.Timestamp.ProcessingUtc)
