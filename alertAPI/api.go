@@ -81,12 +81,12 @@ func (a *Alert) PrettyPrintMessage() (uint8, *string, *[]string, error) {
 	for _, v := range a.Condition.Nodes {
 		var buffer bytes.Buffer
 
-		buffer.WriteString(fmt.Sprintf(AlertTypeIdLabel[a.Setting.AlertTypeId]))
+		buffer.WriteString(AlertTypeIdLabel[a.Setting.AlertTypeId])
 
 		// Only print the alert subtype when set
 		if a.Setting.AlertSubTypeId != 0 {
 			buffer.WriteString("-")
-			buffer.WriteString(fmt.Sprintf(AlertSubTypeIdLabel[a.Setting.AlertSubTypeId])
+			buffer.WriteString(AlertSubTypeIdLabel[a.Setting.AlertSubTypeId])
 		}
 
 		// Only display the exit code if provided
